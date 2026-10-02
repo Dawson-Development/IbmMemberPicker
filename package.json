@@ -1,8 +1,8 @@
 {
   "name": "ibm-member-opener",
-  "displayName": "IbmMemberPicker",
+  "displayName": "Ibm Member Picker",
   "description": "Open IBM i source members with an RDi-style guided picker.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publisher": "DawsonDevelopment",
   "repository": {
     "type": "git",
