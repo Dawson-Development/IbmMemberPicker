@@ -1,0 +1,75 @@
+{
+  "name": "ibm-member-opener",
+  "displayName": "IbmMemberPicker",
+  "description": "Open IBM i source members with an RDi-style guided picker.",
+  "version": "0.1.1",
+  "publisher": "DawsonDevelopment",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dawson-Development/IbmMemberPicker.git"
+  },
+  "homepage": "https://github.com/Dawson-Development/IbmMemberPicker",
+  "bugs": {
+    "url": "https://github.com/Dawson-Development/IbmMemberPicker/issues"
+  },
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "ibmi",
+    "rdi",
+    "rpgle",
+    "code4i",
+    "source member"
+  ],
+  "activationEvents": [
+    "onCommand:ibm-member-opener.openMember",
+    "onCommand:ibm-member-opener.openMemberDialog"
+  ],
+  "main": "./dist/extension.js",
+  "extensionDependencies": [
+    "halcyontechltd.code-for-ibmi"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "ibm-member-opener.openMember",
+        "title": "Open Source Member",
+        "category": "IBM i"
+      },
+      {
+        "command": "ibm-member-opener.openMemberDialog",
+        "title": "Open Source Member (RDi Dialog)",
+        "category": "IBM i"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "ibm-member-opener.openMember",
+        "key": "ctrl+alt+q",
+        "mac": "cmd+alt+q",
+        "when": "code-for-ibmi:connected"
+      }
+    ]
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "check": "tsc -p ./ --noEmit",
+    "prepackage": "node -e \"require('fs').mkdirSync('vsix', { recursive: true })\"",
+    "package": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/package.ps1"
+  },
+  "dependencies": {
+    "@halcyontech/vscode-ibmi-types": "^3.0.13"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "@types/vscode": "^1.90.0",
+    "@vscode/vsce": "^4.0.0",
+    "typescript": "^5.7.2"
+  }
+}
