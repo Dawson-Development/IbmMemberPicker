@@ -55,5 +55,13 @@ Press `F5` in VS Code to launch an Extension Development Host. To create a VSIX 
    npm run package
    ```
 4. Find the packaged extension at `vsix/ibm-member-opener-<version>.vsix`.
-5. Commit the version bump and tag the release (e.g. `git tag v<version>`).
+5. Commit the version bump, then create and push the release tag:
+   ```text
+   git tag v<version>
+   git push origin v<version>
+   ```
+
+Pushing only the tagged commit does not push a local tag. When the `v<version>`
+tag reaches GitHub, the release workflow builds the VSIX and attaches it to a
+new GitHub Release.
 

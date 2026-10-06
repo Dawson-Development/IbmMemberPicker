@@ -1,9 +1,14 @@
 {
-  "name": "ibm-member-opener",
+  "name": "ibm-member-picker",
   "displayName": "Ibm Member Picker",
   "description": "Open IBM i source members with an RDi-style guided picker.",
   "version": "0.1.2",
   "publisher": "DawsonDevelopment",
+  "icon": "icon.png",
+  "galleryBanner": {
+    "color": "#1F2C3A",
+    "theme": "dark"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/Dawson-Development/IbmMemberPicker.git"
@@ -27,8 +32,8 @@
     "source member"
   ],
   "activationEvents": [
-    "onCommand:ibm-member-opener.openMember",
-    "onCommand:ibm-member-opener.openMemberDialog"
+    "onCommand:ibm-member-picker.openMember",
+    "onCommand:ibm-member-picker.openMemberDialog"
   ],
   "main": "./dist/extension.js",
   "extensionDependencies": [
@@ -37,19 +42,19 @@
   "contributes": {
     "commands": [
       {
-        "command": "ibm-member-opener.openMember",
+        "command": "ibm-member-picker.openMember",
         "title": "Open Source Member",
         "category": "IBM i"
       },
       {
-        "command": "ibm-member-opener.openMemberDialog",
+        "command": "ibm-member-picker.openMemberDialog",
         "title": "Open Source Member (RDi Dialog)",
         "category": "IBM i"
       }
     ],
     "keybindings": [
       {
-        "command": "ibm-member-opener.openMember",
+        "command": "ibm-member-picker.openMember",
         "key": "ctrl+alt+q",
         "mac": "cmd+alt+q",
         "when": "code-for-ibmi:connected"

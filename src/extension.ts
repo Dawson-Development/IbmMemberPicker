@@ -1,13 +1,13 @@
 import type { CodeForIBMi } from "@halcyontech/vscode-ibmi-types";
 import * as vscode from "vscode";
-import { MemberOpener } from "./memberOpener";
+import { MemberOpener } from "./memberPicker";
 
 const CODE_FOR_IBMI_EXTENSION_ID = "halcyontechltd.code-for-ibmi";
 
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
   context.subscriptions.push(
     vscode.commands.registerCommand(
-      "ibm-member-opener.openMember",
+      "ibm-member-picker.openMember",
       async () => {
         const extension =
           vscode.extensions.getExtension<CodeForIBMi>(
@@ -29,7 +29,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
       },
     ),
     vscode.commands.registerCommand(
-      "ibm-member-opener.openMemberDialog",
+      "ibm-member-picker.openMemberDialog",
       async () => {
         const extension =
           vscode.extensions.getExtension<CodeForIBMi>(
