@@ -2,21 +2,14 @@
   "name": "ibm-member-picker",
   "displayName": "Ibm Member Picker",
   "description": "Open IBM i source members with an RDi-style guided picker.",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "publisher": "DawsonDevelopment",
   "icon": "icon.png",
   "galleryBanner": {
     "color": "#1F2C3A",
     "theme": "dark"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Dawson-Development/IbmMemberPicker.git"
-  },
-  "homepage": "https://github.com/Dawson-Development/IbmMemberPicker",
-  "bugs": {
-    "url": "https://github.com/Dawson-Development/IbmMemberPicker/issues"
-  },
+  "homepage": "https://getdawson.com",
   "license": "MIT",
   "engines": {
     "vscode": "^1.90.0"
