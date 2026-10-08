@@ -9,7 +9,14 @@
     "color": "#1F2C3A",
     "theme": "dark"
   },
-  "homepage": "https://getdawson.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dawson-Development/IbmMemberPicker.git"
+  },
+  "homepage": "https://github.com/Dawson-Development/IbmMemberPicker",
+  "bugs": {
+    "url": "https://github.com/Dawson-Development/IbmMemberPicker/issues"
+  },
   "license": "MIT",
   "engines": {
     "vscode": "^1.90.0"
