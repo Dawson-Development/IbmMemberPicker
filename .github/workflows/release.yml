@@ -54,6 +54,11 @@ jobs:
           name: ibm-member-picker-vsix
           path: vsix/*.vsix
 
+      - name: Publish to Visual Studio Marketplace
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+        run: npx vsce publish --packagePath "vsix/ibm-member-opener-${{ steps.version.outputs.version }}.vsix"
+
       - name: Create GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
