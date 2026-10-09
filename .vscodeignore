@@ -6,3 +6,8 @@ tsconfig.json
 node_modules/**
 !node_modules/@halcyontech/vscode-ibmi-types/**
 vsix/**
+scripts/
+.github/
+IbmMemberPicker.code-workspace
+Development.md
+icon.svg
