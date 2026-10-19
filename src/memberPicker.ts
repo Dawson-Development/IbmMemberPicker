@@ -324,9 +324,14 @@ export class MemberOpener {
     members: string[],
   ): string {
       const nonce = randomUUID().replaceAll("-", "");
-      const options = (values: string[]) => values
-        .map((value) => `<option value="${this.escapeHtml(value)}"></option>`)
+      const options = (id: string, values: string[]) => values
+        .map((value, index) => `<div id="${id}-option-${index}" role="option" aria-selected="false">${this.escapeHtml(value)}</div>`)
         .join("");
+      const field = (id: string, title: string, values: string[]) => `
+        <div class="field"><label for="${id}">${title}</label><div class="combobox">
+        <input id="${id}" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="${id}-options" autocomplete="off">
+        <div id="${id}-options" class="suggestions" role="listbox" aria-label="${title}" hidden>${options(id, values)}</div>
+        </div></div>`;
       return `<!doctype html>
     <html>
     <head>
@@ -336,8 +341,13 @@ export class MemberOpener {
     body { font-family: var(--vscode-font-family); color: var(--vscode-foreground); padding: 12px; }
     h2 { margin: 0 0 14px; font-size: 16px; font-weight: 500; }
     .connection { margin-bottom: 12px; color: var(--vscode-descriptionForeground); }
-    label { display: grid; grid-template-columns: 90px 1fr; align-items: center; gap: 8px; margin: 9px 0; }
-    input { color: var(--vscode-input-foreground); background: var(--vscode-input-background); border: 1px solid var(--vscode-input-border); padding: 4px; min-width: 220px; }
+    .field { display: grid; grid-template-columns: 90px minmax(0, 1fr); align-items: center; gap: 8px; margin: 9px 0; }
+    .combobox { position: relative; min-width: 0; }
+    input { color: var(--vscode-input-foreground); background: var(--vscode-input-background); border: 1px solid var(--vscode-input-border); padding: 4px; }
+    input[role="combobox"] { width: 100%; box-sizing: border-box; }
+    .suggestions { position: absolute; top: 100%; left: 0; right: 0; z-index: 1; max-height: 180px; overflow-y: auto; background: var(--vscode-dropdown-background); color: var(--vscode-dropdown-foreground); border: 1px solid var(--vscode-dropdown-border); }
+    .suggestions [role="option"] { padding: 4px; cursor: pointer; overflow-wrap: anywhere; }
+    .suggestions [aria-selected="true"], .suggestions [role="option"]:hover { background: var(--vscode-list-activeSelectionBackground); color: var(--vscode-list-activeSelectionForeground); }
     .mode { display: flex; gap: 18px; margin: 16px 0; }
     .mode label { display: flex; gap: 5px; margin: 0; }
     .buttons { display: flex; justify-content: flex-end; gap: 8px; }
@@ -349,9 +359,9 @@ export class MemberOpener {
     <body>
     <h2>Open Member in Editor</h2>
     <div class="connection">Connection: ${this.escapeHtml(connectionName)}</div>
-    <label>Library<input id="library" list="libraries" autocomplete="off"><datalist id="libraries">${options(libraries)}</datalist></label>
-    <label>File<input id="sourceFile" list="sourceFiles" autocomplete="off"><datalist id="sourceFiles">${options(sourceFiles)}</datalist></label>
-    <label>Member<input id="member" list="members" autocomplete="off"><datalist id="members">${options(members)}</datalist></label>
+    ${field("library", "Library", libraries)}
+    ${field("sourceFile", "File", sourceFiles)}
+    ${field("member", "Member", members)}
     <div class="mode">
       <label><input type="radio" name="mode" value="edit"> Open for edit</label>
       <label><input type="radio" name="mode" value="browse" checked> Open for browse</label>
@@ -364,6 +374,64 @@ export class MemberOpener {
     const sourceFile = document.getElementById('sourceFile');
     const member = document.getElementById('member');
     const error = document.getElementById('error');
+    for (const input of [library, sourceFile, member]) {
+      const list = document.getElementById(input.getAttribute('aria-controls'));
+      const options = Array.from(list.children);
+      let matches = [];
+      let active = -1;
+      const close = () => {
+        list.hidden = true;
+        input.setAttribute('aria-expanded', 'false');
+        input.removeAttribute('aria-activedescendant');
+        options.forEach(option => option.setAttribute('aria-selected', 'false'));
+        active = -1;
+      };
+      const filter = () => {
+        close();
+        const query = input.value.trim().toUpperCase();
+        matches = options.filter(option => {
+          option.hidden = !option.textContent.toUpperCase().includes(query);
+          return !option.hidden;
+        });
+        list.hidden = matches.length === 0;
+        input.setAttribute('aria-expanded', String(!list.hidden));
+      };
+      const select = option => {
+        input.value = option.textContent;
+        close();
+      };
+      input.addEventListener('focus', filter);
+      input.addEventListener('input', filter);
+      input.addEventListener('blur', close);
+      options.forEach(option => option.addEventListener('mousedown', event => {
+        event.preventDefault();
+        select(option);
+      }));
+      input.addEventListener('keydown', event => {
+        if (event.isComposing) return;
+        if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+          event.preventDefault();
+          if (list.hidden) filter();
+          if (!matches.length) return;
+          active = active < 0
+            ? (event.key === 'ArrowDown' ? 0 : matches.length - 1)
+            : (active + (event.key === 'ArrowDown' ? 1 : -1) + matches.length) % matches.length;
+          options.forEach(option => option.setAttribute('aria-selected', 'false'));
+          const option = matches[active];
+          option.setAttribute('aria-selected', 'true');
+          input.setAttribute('aria-activedescendant', option.id);
+          option.scrollIntoView({ block: 'nearest' });
+        } else if (event.key === 'Enter') {
+          event.preventDefault();
+          if (!list.hidden && active >= 0) select(matches[active]);
+          else document.getElementById('ok').click();
+        } else if (event.key === 'Escape' && !list.hidden) {
+          event.preventDefault();
+          event.stopPropagation();
+          close();
+        }
+      });
+    }
     document.getElementById('cancel').addEventListener('click', () => vscode.postMessage({ type: 'cancel' }));
     document.getElementById('ok').addEventListener('click', () => {
       error.textContent = '';

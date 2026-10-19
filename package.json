@@ -65,6 +65,7 @@
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "check": "tsc -p ./ --noEmit",
+    "test": "npm run compile && node --test",
     "prepackage": "node -e \"require('fs').mkdirSync('vsix', { recursive: true })\"",
     "package": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/package.ps1"
   },

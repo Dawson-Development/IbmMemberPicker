@@ -4,6 +4,7 @@
 npm install
 npm run check
 npm run compile
+npm test
 ```
 
 Press `F5` in VS Code to launch an Extension Development Host. To create a VSIX package in the `vsix` folder, run `npm run package`.
@@ -32,4 +33,3 @@ Press `F5` in VS Code to launch an Extension Development Host. To create a VSIX 
 Pushing only the tagged commit does not push a local tag. When the `v<version>`
 tag reaches GitHub, the release workflow builds the VSIX and attaches it to a
 new GitHub Release.
-
