@@ -2,7 +2,7 @@
   "name": "ibm-member-picker",
   "displayName": "Ibm Member Picker",
   "description": "Open IBM i source members with an RDi-style guided picker.",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "publisher": "DawsonDevelopment",
   "icon": "icon.png",
   "galleryBanner": {
