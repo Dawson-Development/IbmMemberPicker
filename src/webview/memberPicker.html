@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'nonce-{{nonce}}';">
+  <style>{{styles}}</style>
+</head>
+<body>
+  <h2>Open Member in Editor</h2>
+  <div class="connection">Connection: {{connectionName}}</div>
+  <div class="field"><label for="library">Library</label><div class="combobox">
+    <input id="library" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="library-options" autocomplete="off">
+    <div id="library-options" class="suggestions" role="listbox" aria-label="Library" hidden>{{libraryOptions}}</div>
+  </div></div>
+  <div class="field"><label for="sourceFile">File</label><div class="combobox">
+    <input id="sourceFile" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="sourceFile-options" autocomplete="off">
+    <div id="sourceFile-options" class="suggestions" role="listbox" aria-label="File" hidden>{{sourceFileOptions}}</div>
+  </div></div>
+  <div class="field"><label for="member">Member</label><div class="combobox">
+    <input id="member" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="member-options" autocomplete="off">
+    <div id="member-options" class="suggestions" role="listbox" aria-label="Member" hidden>{{memberOptions}}</div>
+  </div></div>
+  <div class="mode">
+    <label><input type="radio" name="mode" value="edit"> Open for edit</label>
+    <label><input type="radio" name="mode" value="browse" checked> Open for browse</label>
+  </div>
+  <div id="error"></div>
+  <div class="buttons"><button id="cancel">Cancel</button><button id="ok">OK</button></div>
+  <script nonce="{{nonce}}">{{script}}</script>
+</body>
+</html>

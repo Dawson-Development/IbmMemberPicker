@@ -1,5 +1,7 @@
 const assert = require("node:assert/strict");
+const { readFileSync } = require("node:fs");
 const Module = require("node:module");
+const { join } = require("node:path");
 const test = require("node:test");
 const vm = require("node:vm");
 
@@ -202,6 +204,31 @@ test("missing IBM i connection reports an error without opening a picker", async
     "Connect to an IBM i with Code for IBM i before opening a source member.",
   ]);
   assert.equal(harness.calls.objectList.length, 0);
+});
+
+test("direct picker embeds the source assets with nonce protection", () => {
+  const { opener } = createHarness();
+  const html = opener.directPickerHtml("TEST", ["MYLIB"], ["QSRC"], ["HELLO"]);
+  const script = readFileSync(join(__dirname, "../src/webview/memberPicker.js"), "utf8");
+  const styles = readFileSync(join(__dirname, "../src/webview/memberPicker.css"), "utf8");
+  assert.equal(html.match(/<script nonce="[^"]+">([\s\S]*?)<\/script>/)[1], script);
+  assert.equal(html.match(/<style>([\s\S]*?)<\/style>/)[1], styles);
+  const nonce = html.match(/<script nonce="([^"]+)">/)[1];
+  assert.ok(html.includes(`script-src 'nonce-${nonce}'`));
+  assert.notEqual(opener.directPickerHtml("TEST", [], [], []).match(/<script nonce="([^"]+)">/)[1], nonce);
+  assert.doesNotMatch(html, /\{\{\w+\}\}/);
+});
+
+test("direct picker escapes values without expanding embedded placeholders", () => {
+  const { opener } = createHarness();
+  const value = `<script>"&'{{script}}</script>`;
+  const escaped = "&lt;script&gt;&quot;&amp;&#39;{{script}}&lt;/script&gt;";
+  const html = opener.directPickerHtml(value, [value], [value], [value]);
+  assert.ok(html.includes(`Connection: ${escaped}</div>`));
+  for (const id of ["library", "sourceFile", "member"]) {
+    assert.ok(html.includes(`<div id="${id}-option-0" role="option" aria-selected="false">${escaped}</div>`));
+  }
+  assert.doesNotMatch(html, /<script>/);
 });
 
 function createDirectPickerHarness() {

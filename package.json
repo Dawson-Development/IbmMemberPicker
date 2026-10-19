@@ -62,8 +62,9 @@
     ]
   },
   "scripts": {
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
+    "vscode:prepublish": "npm run compile",
+    "compile": "node scripts/build.cjs",
+    "watch": "node scripts/build.cjs --watch",
     "check": "tsc -p ./ --noEmit",
     "test": "npm run compile && node --test",
     "prepackage": "node -e \"require('fs').mkdirSync('vsix', { recursive: true })\"",

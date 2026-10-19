@@ -1,0 +1,16 @@
+body { font-family: var(--vscode-font-family); color: var(--vscode-foreground); padding: 12px; }
+h2 { margin: 0 0 14px; font-size: 16px; font-weight: 500; }
+.connection { margin-bottom: 12px; color: var(--vscode-descriptionForeground); }
+.field { display: grid; grid-template-columns: 90px minmax(0, 1fr); align-items: center; gap: 8px; margin: 9px 0; }
+.combobox { position: relative; min-width: 0; }
+input { color: var(--vscode-input-foreground); background: var(--vscode-input-background); border: 1px solid var(--vscode-input-border); padding: 4px; }
+input[role="combobox"] { width: 100%; box-sizing: border-box; }
+.suggestions { position: absolute; top: 100%; left: 0; right: 0; z-index: 1; max-height: 180px; overflow-y: auto; background: var(--vscode-dropdown-background); color: var(--vscode-dropdown-foreground); border: 1px solid var(--vscode-dropdown-border); }
+.suggestions [role="option"] { padding: 4px; cursor: pointer; overflow-wrap: anywhere; }
+.suggestions [aria-selected="true"], .suggestions [role="option"]:hover { background: var(--vscode-list-activeSelectionBackground); color: var(--vscode-list-activeSelectionForeground); }
+.mode { display: flex; gap: 18px; margin: 16px 0; }
+.mode label { display: flex; gap: 5px; margin: 0; }
+.buttons { display: flex; justify-content: flex-end; gap: 8px; }
+button { padding: 5px 14px; color: var(--vscode-button-foreground); background: var(--vscode-button-background); border: 0; }
+button:hover { background: var(--vscode-button-hoverBackground); }
+#error { color: var(--vscode-errorForeground); min-height: 18px; }
